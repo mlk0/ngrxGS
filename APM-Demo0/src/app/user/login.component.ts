@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit {
     this.state.pipe(select('user')).subscribe(
       user => {
         if (user) {
+          console.log(`LoginComponent - user slice updated response from the subsribed observable`);
           this.maskUserName = user.maskUserName;
         }
       }
@@ -39,7 +40,7 @@ export class LoginComponent implements OnInit {
 
   checkChanged(value: boolean): void {
     
-    console.log(`maskUserName : ${value}`)
+    console.log(`LoginComponent.checkChanged - dispatching maskUserName : ${value}`);
     
     this.state.dispatch(
       {
