@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 
 import { Product } from '../product';
 import { ProductService } from '../product.service';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 
 @Component({
   selector: 'pm-product-list',
@@ -24,7 +24,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   sub: Subscription;
 
   constructor(
-    private store : Store<any>,
+    private store: Store<any>,
     private productService: ProductService) { }
 
   ngOnInit(): void {
@@ -36,6 +36,17 @@ export class ProductListComponent implements OnInit, OnDestroy {
       (products: Product[]) => this.products = products,
       (err: any) => this.errorMessage = err.error
     );
+
+    this.store.pipe(select('products')).subscribe(
+      products => {
+
+        console.log('ProductListComponent - products slice updated response from the observable subsription');
+        if (products) {
+          this.displayCode = products.showProductCode;
+
+        }
+      }
+    );
   }
 
   ngOnDestroy(): void {
@@ -46,8 +57,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
     //this.displayCode = value;
     this.store.dispatch(
       {
-        type : 'TOGGLE_SHOW_PRODUCT_CODE',
-        payload : value
+        type: 'TOGGLE_SHOW_PRODUCT_CODE',
+        payload: value
       }
     );
   }
