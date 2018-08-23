@@ -5,6 +5,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from './auth.service';
 import { Store, select } from '@ngrx/store';
 
+//this is one option to reference directly to the app state  but in this case the selectors will not be there
+import * as fromRoot from '../state/app-state';
+
+//so it's better to export all from the feature reducer from where the AppState can be simply exported without adding anything new there
+import * as fromUserReducer from '../user/state/user-state-reducer';
+
+
 @Component({
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
@@ -17,18 +24,19 @@ export class LoginComponent implements OnInit {
 
   constructor(private authService: AuthService,
     private router: Router,
-    private state: Store<any>
+    // private state: Store<fromRoot.AppState>
+    private state: Store<fromUserReducer.AppState>
   ) {
   }
 
   ngOnInit(): void {
 
-    this.state.pipe(select('user')).subscribe(
-      user => {
-        if (user) {
+    this.state.pipe(select(fromUserReducer.maskUserNameSelector)).subscribe(
+      maskUserNameState => {
+        
           console.log(`LoginComponent - user slice updated response from the subsribed observable`);
-          this.maskUserName = user.maskUserName;
-        }
+          this.maskUserName = maskUserNameState;
+        
       }
     );
 

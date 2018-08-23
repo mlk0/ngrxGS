@@ -38,14 +38,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
       (err: any) => this.errorMessage = err.error
     );
 
-    this.store.pipe(select('products')).subscribe(
-      products => {
-
-        console.log('ProductListComponent - products slice updated response from the observable subsription');
-        
-          this.displayCode = products.showProductCode;
-
-         
+    this.store.pipe(select(fromProductState.showProductCodeSelector)).subscribe(
+      showProductCode => {
+        console.log('ProductListComponent - products slice updated response from the observable subsription');        
+          this.displayCode = showProductCode;         
       }
     );
   }
