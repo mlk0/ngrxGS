@@ -1,4 +1,9 @@
 import { Product } from "../product";
+import * as fromRoot from "../../state/app-state"
+
+ export interface AppState extends fromRoot.AppState {
+    products : ProductState
+ }
 
 export interface ProductState {
     showProductCode: boolean,
@@ -6,7 +11,13 @@ export interface ProductState {
     products: Product[]
 }
 
-export function ProductsStateReducer(state, action) {
+const initialState : ProductState = {
+    showProductCode: true,
+    selectedProduct: null,
+    products: []
+}
+
+export function ProductsStateReducer(state : ProductState = initialState, action) : ProductState {
 
     console.log(`action : `, JSON.stringify(action));
     console.log(`original state : `, JSON.stringify(state));
