@@ -2,12 +2,12 @@ import { Action } from "@ngrx/store";
 
 //enum of all action types for the product feature
 export enum ProductActionTypes {
-    ToggleProductCode = '[Product] Toggle Product Code'
+    ToggleShowProductCode = '[Product] Toggle Product Code'
 }
 
 //action creator
-export class ToggleProductCode implements Action{
-    readonly type: string = ProductActionTypes.ToggleProductCode;
+export class ToggleShowProductCode implements Action{
+    readonly type: string = ProductActionTypes.ToggleShowProductCode;
     constructor(public payload : boolean){}
 
     // public payload : boolean;
@@ -17,4 +17,4 @@ export class ToggleProductCode implements Action{
 }
 
 //union type
-export type ProductActions = ToggleProductCode;
+export type ProductActions = ToggleShowProductCode;
