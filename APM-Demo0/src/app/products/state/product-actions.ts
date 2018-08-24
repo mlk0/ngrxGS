@@ -1,6 +1,6 @@
 import { Action } from "@ngrx/store";
 import { Product } from "../product";
-import { Action } from "rxjs/internal/scheduler/Action";
+ 
 
 //enum of all action types for the product feature
 export enum ProductActionTypes {

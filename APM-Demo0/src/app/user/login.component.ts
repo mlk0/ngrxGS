@@ -9,8 +9,8 @@ import { Store, select } from '@ngrx/store';
 import * as fromRoot from '../state/app-state';
 
 //so it's better to export all from the feature reducer from where the AppState can be simply exported without adding anything new there
-import * as fromUserReducer from '../user/state/user-state-reducer';
-
+import * as fromUserReducer from './state/user-state-reducer';
+import * as fromUserActions from './state/user-actions'
 
 @Component({
   templateUrl: './login.component.html',
@@ -50,12 +50,15 @@ export class LoginComponent implements OnInit {
     
     console.log(`LoginComponent.checkChanged - dispatching maskUserName : ${value}`);
     
-    this.state.dispatch(
-      {
-        type: 'MASK_USER_NAME',
-        payload: value
-      }
-    );
+    // this.state.dispatch(
+    //   {
+    //     type: 'MASK_USER_NAME',
+    //     payload: value
+    //   }
+    // );
+
+    this.state.dispatch(new fromUserActions.MaskUserName(value));
+
   }
 
   login(loginForm: NgForm): void {
