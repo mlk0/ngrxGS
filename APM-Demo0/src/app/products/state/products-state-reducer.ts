@@ -1,6 +1,7 @@
 import { Product } from "../product";
 import * as fromRoot from "../../state/app-state"
 import { createFeatureSelector, createSelector } from "@ngrx/store";
+import * as fromProductActions from './product-actions'
 
 export interface AppState extends fromRoot.AppState {
     products: ProductState
@@ -56,14 +57,14 @@ export const selectedProductSelector = createSelector(
 
 
 
-export function ProductsStateReducer(state: ProductState = initialState, action): ProductState {
+export function ProductsStateReducer(state: ProductState = initialState, action : fromProductActions.ProductActions): ProductState {
 
     console.log(`action : `, JSON.stringify(action));
     console.log(`original state : `, JSON.stringify(state));
 
     switch (action.type) {
 
-        case 'TOGGLE_SHOW_PRODUCT_CODE':
+        case fromProductActions.ProductActionTypes.ToggleShowProductCode:
 
             let newState = {
                 ...state, //'spread the existing state object as set of properties' - effectively copies the state and treats it as set of individual propertiesr
