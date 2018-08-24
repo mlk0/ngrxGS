@@ -30,8 +30,19 @@ export class ProductListComponent implements OnInit, OnDestroy {
     private productService: ProductService) { }
 
   ngOnInit(): void {
-    this.sub = this.productService.selectedProductChanges$.subscribe(
-      selectedProduct => this.selectedProduct = selectedProduct
+    // this.sub = this.productService.selectedProductChanges$.subscribe(
+    //   selectedProduct => this.selectedProduct = selectedProduct
+    // );
+
+    this.store.pipe(select(fromProductState.selectedProductSelectorAlternative)).subscribe(
+      product => 
+      {
+         
+          console.log(`ProductListComponent - selectedProductSelector - set product : ${JSON.stringify(product)} `);
+          this.selectedProduct = product;
+
+        
+      }
     );
 
     this.productService.getProducts().subscribe(
@@ -48,7 +59,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    //this.sub.unsubscribe();
   }
 
   checkChanged(value: boolean): void {
@@ -61,16 +72,25 @@ export class ProductListComponent implements OnInit, OnDestroy {
     // );
 
     this.store.dispatch(
-      new fromProductActions.ToggleShowProductCode(value);
+      new fromProductActions.ToggleShowProductCode(value)
     );
   }
 
   newProduct(): void {
-    this.productService.changeSelectedProduct(this.productService.newProduct());
+    //this.productService.changeSelectedProduct(this.productService.newProduct());
+    this.store.dispatch(
+      new fromProductActions.InitializeCurrentProduct()
+    );
   }
 
   productSelected(product: Product): void {
-    this.productService.changeSelectedProduct(product);
+    //this.productService.changeSelectedProduct(product);
+
+
+    this.store.dispatch(
+      //new fromProductActions.SetCurrentProductId(product.id)
+      new fromProductActions.SetCurrentProduct(product)
+    );
   }
 
 }
