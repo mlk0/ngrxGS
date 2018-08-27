@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
 import { Product } from '../product';
 import { ProductService } from '../product.service';
@@ -26,6 +26,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   selectedProduct: Product | null;
   sub: Subscription;
   componenetActive: boolean;
+  products$: Observable<Product[]>;
 
   constructor(
     private store: Store<fromProductState.AppState>,
@@ -52,9 +53,14 @@ export class ProductListComponent implements OnInit, OnDestroy {
     //   (err: any) => this.errorMessage = err.error
     // );
 
-    this.store.pipe(select(fromProductState.productsSelector), takeWhile(()=>this.componenetActive)).subscribe(
-      products=>this.products = products
-    );
+    //explcit subsription with unsibscribe pattern
+    // this.store.pipe(select(fromProductState.productsSelector), takeWhile(()=>this.componenetActive)).subscribe(
+    //   products=>this.products = products
+    // );
+
+    //creation of an observable for the products without subscription
+    this.products$ = this.store.pipe(select(fromProductState.productsSelector));
+
     this.store.dispatch(new fromProductActions.LoadProducts());
 
     this.store.pipe(select(fromProductState.showProductCodeSelector)).subscribe(
