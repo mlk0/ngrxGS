@@ -25,6 +25,10 @@ const productStateSelector = createFeatureSelector<ProductState>('products'); //
 //    createFeatureSelector function is from the @ngrx/store. 
 //    It's specifying the type of the state slice and the string that represents the property witin the AppState
 
+export const productsSelector = createSelector(
+    productStateSelector,
+    products=>products.products
+);
 export const showProductCodeSelector = createSelector(                        //selector for a specific property to which a component needs to be subscribed, showProductCode in this case
     productStateSelector,
     products => {
@@ -139,6 +143,13 @@ export function ProductsStateReducer(state: ProductState = initialState, action:
             }
         }
 
+        case fromProductActions.ProductActionTypes.LoadProductsSuccess :
+         {
+             return {
+                 ...state,
+                 products : action.payload as Product[]
+             }
+         }
         default:
             return state;
     }

@@ -7,6 +7,7 @@ import { ProductService } from '../product.service';
 import { Store, select } from '@ngrx/store';
 import * as fromProductState from "../state/products-state-reducer"
 import * as fromProductActions from '../state/product-actions'
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'pm-product-list',
@@ -24,16 +25,17 @@ export class ProductListComponent implements OnInit, OnDestroy {
   // Used to highlight the selected product in the list
   selectedProduct: Product | null;
   sub: Subscription;
+  componenetActive: boolean;
 
   constructor(
     private store: Store<fromProductState.AppState>,
     private productService: ProductService) { }
 
   ngOnInit(): void {
+    this.componenetActive = true;
     // this.sub = this.productService.selectedProductChanges$.subscribe(
     //   selectedProduct => this.selectedProduct = selectedProduct
     // );
-
     this.store.pipe(select(fromProductState.selectedProductSelectorAlternative)).subscribe(
       product => 
       {
@@ -45,10 +47,15 @@ export class ProductListComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.productService.getProducts().subscribe(
-      (products: Product[]) => this.products = products,
-      (err: any) => this.errorMessage = err.error
+    // this.productService.getProducts().subscribe(
+    //   (products: Product[]) => this.products = products,
+    //   (err: any) => this.errorMessage = err.error
+    // );
+
+    this.store.pipe(select(fromProductState.productsSelector), takeWhile(()=>this.componenetActive)).subscribe(
+      products=>this.products = products
     );
+    this.store.dispatch(new fromProductActions.LoadProducts());
 
     this.store.pipe(select(fromProductState.showProductCodeSelector)).subscribe(
       showProductCode => {
@@ -60,6 +67,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     //this.sub.unsubscribe();
+
+    console.log(`ngOnDestroy - ProductListComponent`);
+    this.componenetActive=false;
   }
 
   checkChanged(value: boolean): void {
