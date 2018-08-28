@@ -1,6 +1,6 @@
-<div class="card" *ngIf="product">
+<div class="card" *ngIf="selectedProduct">
   <div class="card-header">
-    {{pageTitle}}
+    {{pageTitle}} zxczxcxz
   </div>
   <div class="card-body">
     <form novalidate (ngSubmit)="saveProduct()" [formGroup]="productForm">
@@ -95,6 +95,11 @@
     </form>
   </div>
 </div>
-<div *ngIf="errorMessage$ | async as errorMessage" class="alert alert-danger">
+<div *ngIf="errorMessage" class="alert alert-danger">
   Error: {{ errorMessage }}
 </div>
+
+
+<pre>
+  {{(selectedProduct  | json) }}
+</pre>

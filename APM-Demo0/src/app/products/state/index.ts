@@ -42,9 +42,9 @@ export const selectedProductSelector = createSelector(
     selectedProductIdSelector,
     (products, selectedProductId) => {
 
-        console.log(`selectedProductSelector : ${selectedProductId}`)
-        console.log(`products : `, JSON.stringify(products));
-
+        console.log(`selectedProductSelector XX: ${selectedProductId}`)
+        // console.log(`products : `, JSON.stringify(products));
+        
 
         if (selectedProductId === 0) {
             let newProduct: Product = {

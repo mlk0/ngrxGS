@@ -14,13 +14,14 @@ export class ProductListComponent {
   @Input() products : Product[];
   @Input() errorMessage : string;
   @Input() displayCode : boolean;
-  @Input() selectedProduct : number;
+  @Input() selectedProduct : Product;
 
   @Output() checked = new EventEmitter<boolean>();
   @Output() initializeNewProduct = new EventEmitter();
   @Output() selected = new EventEmitter<Product>();
 
   productSelected(product: Product) {
+    console.log('ProductListComponent.productSelected')
      this.selected.emit(product);
   }
 

@@ -6,8 +6,8 @@ import * as fromProductActions from '../../state/product-actions'
 import { Observable } from 'rxjs';
 
 @Component({
-    templateUrl: './product-shell.component.html',
-    changeDetection : ChangeDetectionStrategy.OnPush
+    templateUrl: './product-shell.component.html'
+    //,changeDetection : ChangeDetectionStrategy.OnPush
 })
 export class ProductShellComponent implements OnInit {
 
@@ -47,10 +47,35 @@ export class ProductShellComponent implements OnInit {
 
     productSelected(product: Product): void {
 
-
+console.log(`productSelected asssssssssssssssssssssssssssssssssssssssssssssssss`)
 
         this.store.dispatch(
             new fromProductActions.SetCurrentProduct(product)
         );
     }
+
+
+
+    deleteProductById(productId : number){
+      this.store.dispatch(new fromProductActions.DeleteProduct(productId));
+
+    }
+    saveOrUpdateProduct(product : Product){
+        if (product.id === 0) {
+
+          this.store.dispatch(new fromProductActions.AddProduct(product));
+
+        } else {
+
+          this.store.dispatch(new fromProductActions.UpdateProduct(product));
+
+        }
+    }
+
+    clearCurrentProduct(){
+        this.store.dispatch(
+                new fromProductActions.ClearCurrentProduct()
+            );
+    }
+
 }
