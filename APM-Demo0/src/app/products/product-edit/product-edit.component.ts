@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Subscription } from 'rxjs';
+import { Subscription, Observable, of } from 'rxjs';
 
 import { Product } from '../product';
 import { ProductService } from '../product.service';
@@ -21,7 +21,7 @@ import { takeWhile } from 'rxjs/operators';
 })
 export class ProductEditComponent implements OnInit, OnDestroy {
   pageTitle = 'Product Edit';
-  errorMessage = '';
+  //errorMessage = '';
   productForm: FormGroup;
 
   product: Product | null;
@@ -32,6 +32,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   private validationMessages: { [key: string]: { [key: string]: string } };
   private genericValidator: GenericValidator;
   componentActive: boolean = true;
+  errorMessage$: Observable<string>;
 
   constructor(private fb: FormBuilder,
               private productService: ProductService,
@@ -75,13 +76,15 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     //   selectedProduct => this.displayProduct(selectedProduct)
     // );
 
-    this.store.pipe(select(fromProductState.selectedProductSelectorAlternative, takeWhile(()=>this.componentActive))).subscribe(
+    this.store.pipe(select(fromProductState.selectedProductSelector, takeWhile(()=>this.componentActive))).subscribe(
       selectedProduct => {
         console.log(`ProductEditComponent - selectedProductSelector - selectedProduct : ${selectedProduct}`);
         this.displayProduct(selectedProduct);
       } 
     );
     
+    //listen to the errors that might happen when updating the product 
+    this.errorMessage$ = this.store.pipe(select(fromProductState.errorMessageSelector, takeWhile(()=>this.componentActive)));
 
 
     // Watch for value changes
@@ -169,19 +172,22 @@ export class ProductEditComponent implements OnInit, OnDestroy {
             product => 
               //this.productService.changeSelectedProduct(product),
               this.store.dispatch(new fromProductActions.SetCurrentProduct(product)),
-            (err: any) => this.errorMessage = err.error
+            //(err: any) => this.errorMessage = err.error
           );
         } else {
-          this.productService.updateProduct(p).subscribe(
-             product => 
-                          //this.productService.changeSelectedProduct(product),
-                          this.store.dispatch(new fromProductActions.SetCurrentProduct(product)),
-            (err: any) => this.errorMessage = err.error
-          );
+          // this.productService.updateProduct(p).subscribe(
+          //    product => 
+          //                 //this.productService.changeSelectedProduct(product),
+          //                 this.store.dispatch(new fromProductActions.SetCurrentProduct(product)),
+          //   (err: any) => this.errorMessage = err.error
+          // );
+
+          this.store.dispatch(new fromProductActions.UpdateProduct(p));
+
         }
       }
     } else {
-      this.errorMessage = 'Please correct the validation errors.';
+      this.errorMessage$ = of('Please correct the validation errors.');
     }
   }
 

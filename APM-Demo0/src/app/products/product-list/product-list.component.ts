@@ -45,7 +45,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     //   selectedProduct => this.selectedProduct = selectedProduct
     // );
     
-    this.store.pipe(select(fromProductState.selectedProductSelectorAlternative, takeWhile(()=>this.componenetActive))).subscribe(
+    this.store.pipe(select(fromProductState.selectedProductSelector, takeWhile(()=>this.componenetActive))).subscribe(
     product => 
     {         
           console.log(`ProductListComponent - selectedProductSelector - set product : ${JSON.stringify(product)} `);
