@@ -11,14 +11,16 @@ export interface ProductState {
     showProductCode: boolean,
     products: Product[],
     selectedProductId: number,
-    selectedProduct : Product
+    selectedProduct : Product,
+    errorMessage : string
 }
 
 const initialState: ProductState = {
     showProductCode: true,
     products: [],
     selectedProductId: 0,
-    selectedProduct : null
+    selectedProduct : null,
+    errorMessage : ''
 }
 
 const productStateSelector = createFeatureSelector<ProductState>('products'); //feature selector - 
@@ -72,7 +74,10 @@ export const selectedProductSelectorAlternative = createSelector(
 );
 
 
-
+export const errorMessageSelector = createSelector(
+    productStateSelector,
+    products=>products.errorMessage
+);
 
 
 export function ProductsStateReducer(state: ProductState = initialState, action: fromProductActions.ProductActions) : ProductState 
@@ -148,6 +153,15 @@ export function ProductsStateReducer(state: ProductState = initialState, action:
              return {
                  ...state,
                  products : action.payload as Product[]
+             }
+         }
+
+         case fromProductActions.ProductActionTypes.LoadProductsFailure : 
+         {
+             return {
+                 ...state,
+                 products : [],
+                 errorMessage : action.payload as string
              }
          }
         default:

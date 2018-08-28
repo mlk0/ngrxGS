@@ -28,7 +28,8 @@ export class ProductService {
       .pipe(
         tap(data => console.log(JSON.stringify(data))),
         catchError(this.handleError)
-      );
+      )
+      ;
   }
 
   // // Return an initialized product
@@ -76,6 +77,9 @@ export class ProductService {
   }
 
   private handleError(err) {
+
+console.log(`handlingError : ${JSON.stringify(err)}`);
+
     // in a real world app, we may send the server to some remote logging infrastructure
     // instead of just logging it to the console
     let errorMessage: string;

@@ -16,7 +16,6 @@ import { takeWhile } from 'rxjs/operators';
 })
 export class ProductListComponent implements OnInit, OnDestroy {
   pageTitle = 'Products';
-  errorMessage: string;
 
   displayCode: boolean;
 
@@ -27,6 +26,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   sub: Subscription;
   componenetActive: boolean;
   products$: Observable<Product[]>;
+  errorMessage$: Observable<string>;
 
   constructor(
     private store: Store<fromProductState.AppState>,
@@ -34,9 +34,17 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.componenetActive = true;
+    
+    this.errorMessage$ = this.store.pipe(select(fromProductState.errorMessageSelector));
+    // this.store.pipe(select(fromProductActions.ProductActionTypes.LoadProductsFailure)).subscribe(
+    //   error => console.log(`ProductListComponent - error : ${error}`)
+    // );
+
+    
     // this.sub = this.productService.selectedProductChanges$.subscribe(
     //   selectedProduct => this.selectedProduct = selectedProduct
     // );
+    
     this.store.pipe(select(fromProductState.selectedProductSelectorAlternative)).subscribe(
       product => 
       {
