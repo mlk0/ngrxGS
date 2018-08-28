@@ -16,9 +16,13 @@ export enum ProductActionTypes {
 
     UpdateProduct = '[Product] Update Product',
     UpdateProductSuccess = '[Product] Update Product Success',
-    UpdateProductFailure = '[Product] Update Product Failure'
+    UpdateProductFailure = '[Product] Update Product Failure',
 
-
+    AddProduct = '[Product] Add Product',
+    AddProductSuccess = '[Product] Add Product Success',
+    AddProductFailure = '[Product] Add Product Failure'
+    
+    
 }
 
 //action creator
@@ -26,12 +30,12 @@ export class ToggleShowProductCode implements Action {
     readonly type: string = ProductActionTypes.ToggleShowProductCode;
     constructor(public payload: boolean) {
     }
-
+    
     // public payload : boolean;
     // constructor(togleProductCodePayload : boolean){
-    //     this.payload = togleProductCodePayload;
-    // }
-}
+        //     this.payload = togleProductCodePayload;
+        // }
+    }
 
 
 
@@ -95,6 +99,26 @@ export class UpdateProductFailure implements Action {
 }
 
 
+
+export class AddProduct implements Action{
+    readonly type: string = ProductActionTypes.AddProduct;
+    constructor(public payload : Product){}
+}
+
+
+export class AddProductSuccess implements Action{
+    readonly type: string = ProductActionTypes.AddProductSuccess;
+    constructor(public payload : Product){}
+}
+
+
+export class AddProductFailure implements Action{
+    readonly type: string = ProductActionTypes.AddProductFailure;
+    constructor(public payload : string){}
+}
+
+
+
 //union type
 export type ProductActions =
     ToggleShowProductCode
@@ -103,4 +127,5 @@ export type ProductActions =
     | InitializeCurrentProduct
     | LoadProducts | LoadProductsSuccess | LoadProductsFailure
     | UpdateProduct | UpdateProductSuccess | UpdateProductFailure
+    | AddProduct | AddProductSuccess | AddProductFailure
     ;

@@ -44,4 +44,14 @@ export class ProductEffects {
     )
   );
 
+  @Effect()
+  addProduct$ = this.actions$.pipe(
+    ofType(fromProductActions.ProductActionTypes.AddProduct),
+    mergeMap((action:fromProductActions.AddProduct)=> this.productService.createProduct(action.payload).pipe(
+      map(newProduct=>new fromProductActions.AddProductSuccess(newProduct)),
+      catchError(err=>of(new fromProductActions.AddProductFailure(err)))
+    )
+  )
+  );
+
 }

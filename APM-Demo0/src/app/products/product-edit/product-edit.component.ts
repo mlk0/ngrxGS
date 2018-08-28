@@ -83,7 +83,8 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       } 
     );
     
-    //listen to the errors that might happen when updating the product 
+    //listen to the errors that might happen when updating the product or adding the product
+    //both of those will set the Product.errorMessage in the model to which this selector is hooked in.
     this.errorMessage$ = this.store.pipe(select(fromProductState.errorMessageSelector, takeWhile(()=>this.componentActive)));
 
 
@@ -168,12 +169,15 @@ export class ProductEditComponent implements OnInit, OnDestroy {
         const p = { ...this.product, ...this.productForm.value };
 
         if (p.id === 0) {
-          this.productService.createProduct(p).subscribe(
-            product => 
-              //this.productService.changeSelectedProduct(product),
-              this.store.dispatch(new fromProductActions.SetCurrentProduct(product)),
-            //(err: any) => this.errorMessage = err.error
-          );
+
+          this.store.dispatch(new fromProductActions.AddProduct(p));
+
+          // this.productService.createProduct(p).subscribe(
+          //   product => 
+          //     //this.productService.changeSelectedProduct(product),
+          //     this.store.dispatch(new fromProductActions.SetCurrentProduct(product)),
+          //   //(err: any) => this.errorMessage = err.error
+          // );
         } else {
           // this.productService.updateProduct(p).subscribe(
           //    product => 

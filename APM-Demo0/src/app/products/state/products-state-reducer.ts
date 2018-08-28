@@ -189,6 +189,7 @@ export function ProductsStateReducer(state: ProductState = initialState, action:
             }
         }
 
+        case fromProductActions.ProductActionTypes.AddProductFailure :
         case fromProductActions.ProductActionTypes.UpdateProductFailure : {
             return {
                 ...state,
@@ -197,6 +198,19 @@ export function ProductsStateReducer(state: ProductState = initialState, action:
             }
         }
 
+        case fromProductActions.ProductActionTypes.AddProductSuccess : {
+
+            let productsWithNewItem = state.products.concat(action.payload);
+
+            return {
+                ...state,
+                selectedProductId : (action.payload as Product).id,
+                errorMessage : '',
+                products : productsWithNewItem
+            }
+        }
+
+        
         default:
             return state;
     }
