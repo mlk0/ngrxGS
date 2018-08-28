@@ -45,14 +45,12 @@ export class ProductListComponent implements OnInit, OnDestroy {
     //   selectedProduct => this.selectedProduct = selectedProduct
     // );
     
-    this.store.pipe(select(fromProductState.selectedProductSelectorAlternative)).subscribe(
-      product => 
-      {
-         
+    this.store.pipe(select(fromProductState.selectedProductSelectorAlternative, takeWhile(()=>this.componenetActive))).subscribe(
+    product => 
+    {         
           console.log(`ProductListComponent - selectedProductSelector - set product : ${JSON.stringify(product)} `);
           this.selectedProduct = product;
 
-        
       }
     );
 
@@ -71,7 +69,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
     this.store.dispatch(new fromProductActions.LoadProducts());
 
-    this.store.pipe(select(fromProductState.showProductCodeSelector)).subscribe(
+    this.store.pipe(select(fromProductState.showProductCodeSelector), takeWhile(()=>this.componenetActive==true)).subscribe(
       showProductCode => {
         console.log('ProductListComponent - products slice updated response from the observable subsription');        
           this.displayCode = showProductCode;         

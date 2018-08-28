@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -11,27 +11,31 @@ import * as fromRoot from '../state/app-state';
 //so it's better to export all from the feature reducer from where the AppState can be simply exported without adding anything new there
 import * as fromUserReducer from './state/user-state-reducer';
 import * as fromUserActions from './state/user-actions'
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
+  ngOnDestroy(): void {
+    this.componentActive = false;
+  }
   pageTitle = 'Log In';
   errorMessage: string;
 
   maskUserName: boolean;
+  componentActive: boolean = true;
 
   constructor(private authService: AuthService,
     private router: Router,
-    // private state: Store<fromRoot.AppState>
     private state: Store<fromUserReducer.AppState>
   ) {
   }
 
   ngOnInit(): void {
 
-    this.state.pipe(select(fromUserReducer.maskUserNameSelector)).subscribe(
+    this.state.pipe(select(fromUserReducer.maskUserNameSelector, takeWhile(()=>this.componentActive))).subscribe(
       maskUserNameState => {
         
           console.log(`LoginComponent - user slice updated response from the subsribed observable`);
@@ -39,6 +43,7 @@ export class LoginComponent implements OnInit {
         
       }
     );
+
 
   }
 
