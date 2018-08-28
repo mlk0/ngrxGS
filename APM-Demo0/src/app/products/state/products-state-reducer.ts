@@ -94,9 +94,9 @@ export const errorMessageSelector = createSelector(
 
 export function ProductsStateReducer(state: ProductState = initialState, action: fromProductActions.ProductActions): ProductState {
 
-    // console.log(`action : `, JSON.stringify(action));
-    // console.log(`original state : `, JSON.stringify(state));
 
+    console.log(`ProductsStateReducer - responding to action : ${JSON.stringify(action)}`);
+    console.log(`ProductsStateReducer - the original state : ${JSON.stringify(state)}`);
 
 
 
@@ -189,6 +189,7 @@ export function ProductsStateReducer(state: ProductState = initialState, action:
             }
         }
 
+        case fromProductActions.ProductActionTypes.DeleteProductFailure : 
         case fromProductActions.ProductActionTypes.AddProductFailure :
         case fromProductActions.ProductActionTypes.UpdateProductFailure : {
             return {
@@ -211,6 +212,19 @@ export function ProductsStateReducer(state: ProductState = initialState, action:
         }
 
         
+        case fromProductActions.ProductActionTypes.DeleteProductSuccess : {
+
+            let productsWithoutTheDeletedItem = state.products.filter(item=>item.id != (action.payload as number) )
+
+            return {
+                ...state,
+                selectedProductId : null,
+                errorMessage : '',
+                products : productsWithoutTheDeletedItem
+            }
+        }
+
+
         default:
             return state;
     }

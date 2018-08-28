@@ -141,9 +141,12 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     if (this.product && this.product.id) {
       if (confirm(`Really delete the product: ${this.product.productName}?`)) {
 
-        this.store.dispatch(
-          new fromProductActions.ClearCurrentProduct()
-        );
+        this.store.dispatch(new fromProductActions.DeleteProduct(this.product.id));
+
+
+        // this.store.dispatch(
+        //   new fromProductActions.ClearCurrentProduct()
+        // );
 
         // this.productService.deleteProduct(this.product.id).subscribe(
         //   () => this.productService.changeSelectedProduct(null),
