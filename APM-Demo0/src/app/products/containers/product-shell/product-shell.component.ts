@@ -1,12 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Product } from '../../product';
 import { Store, select } from '@ngrx/store';
-import * as fromProductState from "../../state/products-state-reducer"
+import * as fromProductState from "../../state"
 import * as fromProductActions from '../../state/product-actions'
 import { Observable } from 'rxjs';
 
 @Component({
-    templateUrl: './product-shell.component.html'
+    templateUrl: './product-shell.component.html',
+    changeDetection : ChangeDetectionStrategy.OnPush
 })
 export class ProductShellComponent implements OnInit {
 

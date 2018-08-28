@@ -8,7 +8,7 @@ import { ProductService } from '../product.service';
 import { GenericValidator } from '../../shared/generic-validator';
 import { NumberValidators } from '../../shared/number.validator';
 
-import * as fromProductState from '../state/products-state-reducer';
+import * as fromProductState from '../state';
 import * as fromProductActions from '../state/product-actions';
 
 import { Store, select } from '@ngrx/store';
