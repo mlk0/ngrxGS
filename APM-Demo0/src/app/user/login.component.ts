@@ -9,7 +9,7 @@ import { Store, select } from '@ngrx/store';
 import * as fromRoot from '../state/app-state';
 
 //so it's better to export all from the feature reducer from where the AppState can be simply exported without adding anything new there
-import * as fromUserReducer from './state/user-state-reducer';
+import * as fromUserReducer from './state';
 import * as fromUserActions from './state/user-actions'
 import { takeWhile } from 'rxjs/operators';
 
